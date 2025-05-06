@@ -2,7 +2,32 @@
 :root {
     --background-color: #78A2CC;
     --listbg1: #C0EFFF;
+    --bgpale: #0081FF
     --listbg2: #DEF7FF;
+    --text-color: #102542;
+    --bgpale2: #F5F5F4;
+}
+.header {
+    background-color: var(--bgpale);
+    color: var(--text-color);
+    padding-top: 10px;
+    padding-bottom: 10px;   
+    padding-left: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.header img {
+    margin-right: 50px;
+    margin-left: 10px;
+    width: 48px;
+}
+.header h1 {
+    width: 180px;
 }
 
 body {
@@ -20,20 +45,10 @@ body {
     overflow-y: auto;
 }
 
-.header {
-    margin: 0;
-    width: 320px;
-    height: 50px;
-    background-color: #78A2CC;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .card-div {
   padding-right: 10px;
   padding-left: 10px;
+  background-color: var(--bgpale2);
 }
 
 .card-remove-button {
@@ -60,7 +75,7 @@ body {
 
 .deck-list-button {
     width: 100%;
-    background-color: var(--listbg1);
+    background-color: var(--bgpale2);
     border: none;
     border-bottom: 3px dotted var(--background-color);
     font-size: 1.5em;

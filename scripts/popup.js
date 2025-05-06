@@ -2,7 +2,9 @@
 
 import colours from "./colours.js";
 
+/*
 let currentBg = colours.listbg2
+
 function toggleBg(cardDiv) {
     if (currentBg === colours.listbg1) {
         cardDiv.style.backgroundColor = colours.listbg2;
@@ -12,7 +14,7 @@ function toggleBg(cardDiv) {
         currentBg = colours.listbg1;
     }
 }
-
+*/
 
 
 
@@ -23,11 +25,12 @@ chrome.storage.local.get("deckList").then(data => {
     // and also remove it from the popup display
     data.deckList.forEach(card => {
         const cardDiv = document.createElement("div");
-        cardDiv.style.backgroundColor = colours.listbg2;
+        //cardDiv.style.backgroundColor = colours.listbg2;
         //toggleBg(cardDiv);
         cardDiv.classList.add("card-div");
         cardDiv.style.display = "flex";
         const paragraph = document.createElement("p");
+        paragraph.style.color = colours.text;
         paragraph.classList.add("card-name");
         paragraph.textContent = card;
         // align remove button to stick onto the right wall of the cardDiv      
