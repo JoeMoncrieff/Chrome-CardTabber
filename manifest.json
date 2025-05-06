@@ -15,13 +15,21 @@
   "permissions":[
     "storage"
   ],
-
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": ["scripts/scryfall/scryfall-card-page.js"],
       "matches" : [
         "https://scryfall.com/card/*"
-      ]
+      ],
+      "type": "module"
+    },
+    {
+      "js": ["scripts/scryfall/scryfall-search-page.js"],
+      "matches" : [
+        "https://scryfall.com/search*",
+        "https://scryfall.com/sets/*"
+      ],
+      "type": "module"
     }
   ]
 }

@@ -16,4 +16,11 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 
 Currently this project only prints to console. you can check if the project is working as intended by using the inspect functionality and getting the console output for each page.
 
+### Known issues
 
+1. **Scryfall**
+    * Arena cards add wierd in the search page
+
+    * "Add to Tabber" buttons aren't aligned in the text only mode
+2. General
+    * Content scripts can't utilise modules as they're supposed to be standalone annoying since they share functionality.
