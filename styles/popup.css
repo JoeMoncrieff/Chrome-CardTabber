@@ -1,3 +1,10 @@
+
+:root {
+    --background-color: #78A2CC;
+    --listbg1: #C0EFFF;
+    --listbg2: #DEF7FF;
+}
+
 body {
     font-family: Arial, sans-serif;
     width: 320px;
@@ -9,7 +16,7 @@ body {
 
 #deck-list {
     width: 320px;
-    height: 600px;
+    height: auto;
     overflow-y: auto;
 }
 
@@ -17,7 +24,7 @@ body {
     margin: 0;
     width: 320px;
     height: 50px;
-    background-color: #7745d4;
+    background-color: #78A2CC;
     color: white;
     display: flex;
     align-items: center;
@@ -38,4 +45,33 @@ body {
   cursor: pointer;
   float: right;
   width: 20%;
+}
+
+.card-remove-button:hover {
+    font-size: 1.3em;
+}
+
+.card-name {
+  width: 80%;
+  float: left;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.deck-list-button {
+    width: 100%;
+    background-color: var(--listbg1);
+    border: none;
+    border-bottom: 3px dotted var(--background-color);
+    font-size: 1.5em;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    opacity: 0.6;
+    
+}
+
+.deck-list-button:hover {
+    background-color: var(--listbg2);
+    opacity: 1;
 }
