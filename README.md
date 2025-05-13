@@ -14,12 +14,23 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 
 ## Dev notes
 
-Currently this project only prints to console. you can check if the project is working as intended by using the inspect functionality and getting the console output for each page.
+This project now has a tab. added a functionality to add part.
+
+
+### Functionality to add
+
+* potential toggle between qtys and non-qtys
+* potential style swap between 
+    * "1x cardName"
+    * "1 cardName"
+    * "cardName"
+* Implementation of MTGgoldfish
+    * add from event decklists as well?
 
 ### Known issues
 
 1. **Scryfall**
-    * Arena cards add wierd in the search page
+    * Arena cards add weird in the search page
 
     * "Add to Tabber" buttons aren't aligned in the text only mode
 2. General
