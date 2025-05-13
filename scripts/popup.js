@@ -21,6 +21,14 @@ chrome.storage.local.get("deckList").then(data => {
         const removeButton = document.createElement("button");
         removeButton.classList.add("card-remove-button");
         removeButton.textContent = "\u{274C}";
+        //needs to refresh the popup to remove the card from the display
+        removeButton.addEventListener("click", () => {
+            chrome.storage.local.get("deckList").then(data => {
+                data.deckList = data.deckList.filter(c => c.cardName !== card.cardName);
+                chrome.storage.local.set({"deckList": data.deckList});
+                location.reload();
+            });
+        });
 
         const addOneButton = document.createElement("button");
         addOneButton.classList.add("card-remove-button");
@@ -37,21 +45,14 @@ chrome.storage.local.get("deckList").then(data => {
             location.reload();
         });
 
-        //needs to refresh the popup to remove the card from the display
-        removeButton.addEventListener("click", () => {
-            chrome.storage.local.get("deckList").then(data => {
-                data.deckList = data.deckList.filter(c => c !== card);
-                chrome.storage.local.set({"deckList": data.deckList});
-                location.reload();
-            });
-        });
+        
         cardDiv.appendChild(paragraph);
         cardDiv.appendChild(removeButton);
         cardDiv.appendChild(addOneButton);
         cardDiv.appendChild(removeOneButton);
         deckList.appendChild(cardDiv);
         //add dotted line to the bottom of the cardDiv
-        cardDiv.style.borderBottom = "3px dotted " + colours.background;
+        //cardDiv.style.borderBottom = "3px dotted " + colours.background;
     });
 });
 

@@ -6,6 +6,9 @@
     --listbg2: #DEF7FF;
     --text-color: #102542;
     --bgpale2: #F5F5F4;
+
+    --list-bg-experimental: #f2f5fa;
+    --card-bg-experimental: #f9fafb;
 }
 .header {
     background-color: var(--bgpale);
@@ -43,23 +46,27 @@ body {
     width: 320px;
     height: auto;
     overflow-y: auto;
+    background-color: var(--list-bg-experimental);
 }
 
 .card-div {
+  border-radius: 10px;
+  margin: 5px;
   padding-right: 10px;
   padding-left: 10px;
-  background-color: var(--bgpale2);
+  background-color: var(--card-bg-experimental);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .card-remove-button {
   background-color: transparent;
   color: white;
   border: none;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   border-radius: 5px;
   cursor: pointer;
   float: right;
-  width: 20%;
+  width: auto;
 }
 
 .card-remove-button:hover {
@@ -77,7 +84,7 @@ body {
     width: 100%;
     background-color: var(--bgpale2);
     border: none;
-    border-bottom: 3px dotted var(--background-color);
+    /* border-bottom: 3px dotted var(--background-color); */
     font-size: 1.5em;
     padding: 10px;
     cursor: pointer;

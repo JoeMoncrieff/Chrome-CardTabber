@@ -26,6 +26,8 @@ This project now has a tab. added a functionality to add part.
     * "cardName"
 * Implementation of MTGgoldfish
     * add from event decklists as well?
+* Adding card set information (printing)
+* Removing the Arena tag from cards or look into whether it's a supported format or not.
 
 ### Known issues
 

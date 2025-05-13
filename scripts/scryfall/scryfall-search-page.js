@@ -35,7 +35,6 @@ async function checkList(cardName) {
     console.log("init decklist... done");
     return false;
     }
-
     // Check if cardName exists in the deckList
     // Check if cardName exists in the deckList
     const found = data.deckList.find(card => card.cardName === cardName) !== undefined;
@@ -117,7 +116,7 @@ if (url.includes("as=grid")) {
         cardDiv.appendChild(button);
     });
     
-} else if (url.includes("as=full")) {
+} else if (url.includes("as=full") || url.includes("/card/")) {
     const cardDivs = document.querySelectorAll(".card-profile");
     cardDivs.forEach(cardDiv => {
         const actions_section = cardDiv.querySelector(".card-actions");
