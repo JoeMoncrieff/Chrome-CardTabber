@@ -58,7 +58,7 @@ chrome.storage.local.get("deckList").then(data => {
 
 // add a button to the bottom of the deck list that will copy the deckList from the chrome storage to the clipboard
 const copyButton = document.getElementById("copy-deck-list");
-copyButton.textContent = "\u{1F4DD} Copy To Clipboard \u{1F4DD}";
+copyButton.textContent = "\u{1F4DD}";
 copyButton.addEventListener("click", () => {
     let toCopy = "";
     chrome.storage.local.get("deckList").then(data => {
@@ -70,7 +70,7 @@ copyButton.addEventListener("click", () => {
 });
 
 const clearButton = document.getElementById("clear-deck-list");
-clearButton.textContent = "\u{1F5D1} Clear All \u{1F5D1}";
+clearButton.textContent = "\u{1F5D1}";
 clearButton.addEventListener("click", () => {
     chrome.storage.local.set({"deckList": []});
     location.reload();
@@ -79,7 +79,7 @@ clearButton.addEventListener("click", () => {
 
 //Todo once quantities are added, add and if to check 1 or n.
 const downloadButton = document.getElementById("download-deck-list");
-downloadButton.textContent = "\u{1F4E5} Download TXT \u{1F4E5}";
+downloadButton.textContent = "\u{1F4E5}";
 downloadButton.addEventListener("click", () => {
     let toDownload = "";
     chrome.storage.local.get("deckList").then(data => {

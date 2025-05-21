@@ -12,14 +12,8 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 6. Once the extension is loaded, pin this to your extensions bar at the top.
 7. This extension currently operates only on [www.scryfall.com/card/](www.scryfall.com/card/) pages so head to one and press the button under the image.
 
-## Dev notes
-
-This project now has a tab. added a functionality to add part.
-
-
 ### Functionality to add
 
-* potential toggle between qtys and non-qtys
 * potential style swap between 
     * "1x cardName"
     * "1 cardName"
