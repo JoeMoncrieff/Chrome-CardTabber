@@ -10,7 +10,7 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 4. Click the "load unpacked" button in the top left of the page
 5. Navigate to this project folder and select it.
 6. Once the extension is loaded, pin this to your extensions bar at the top.
-7. This extension currently operates only on [www.scryfall.com/card/](www.scryfall.com/card/) pages so head to one and press the button under the image.
+7. This extension currently operates only on [www.scryfall.com](www.scryfall.com/) so browse that website to find cards.
 
 ### Functionality to add
 
