@@ -23,11 +23,13 @@ chrome.storage.local.get("deckList").then(data => {
         removeButton.textContent = "\u{274C}";
         //needs to refresh the popup to remove the card from the display
         removeButton.addEventListener("click", () => {
+            
             chrome.storage.local.get("deckList").then(data => {
                 data.deckList = data.deckList.filter(c => c.cardName !== card.cardName);
                 chrome.storage.local.set({"deckList": data.deckList});
                 location.reload();
             });
+            
         });
 
         const addOneButton = document.createElement("button");
@@ -72,8 +74,11 @@ copyButton.addEventListener("click", () => {
 const clearButton = document.getElementById("clear-deck-list");
 clearButton.textContent = "\u{1F5D1}";
 clearButton.addEventListener("click", () => {
-    chrome.storage.local.set({"deckList": []});
-    location.reload();
+    //TODO: Maybe write better popup confirm here. provisional for now
+    if (confirm("Are you sure you want to delete your list?")){
+        chrome.storage.local.set({"deckList": []});
+        location.reload();
+    }
 });
 
 

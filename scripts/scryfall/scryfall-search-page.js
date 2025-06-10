@@ -36,13 +36,73 @@ async function checkList(cardName) {
     return false;
     }
     // Check if cardName exists in the deckList
-    // Check if cardName exists in the deckList
     const found = data.deckList.find(card => card.cardName === cardName) !== undefined;
     console.log("Checking if card in list:", found);
     return found;
 }
     
-  
+
+function storageChangeEvent(changes, area) {
+    console.log(`Change event fired in ${area} storage`);
+
+    const storageChanges = Object.keys(changes);
+
+    for (const deckList of storageChanges) {
+        if (deckList === 'deckList') {
+            
+            //If an item is removed
+            if (changes[deckList].oldValue.length > changes[deckList].newValue.length) {
+                //assume change here
+                
+                let key_check = []
+                for (let i = 0; i<changes[deckList].newValue.length;i++){
+                    key_check.push(changes[deckList].newValue[i].cardName)
+                }
+                console.log(`${key_check}`)
+                let ourSet = changes[deckList].oldValue.filter((crd) => !key_check.includes(crd.cardName))
+                console.log(`ourset: ${ourSet}`)
+                
+                // for (let i = 0; i<changes[deckList].newValue.length;i++){
+                for (let i = 0; i<ourSet.length;i++){
+                    console.log(ourSet[i].cardName.replaceAll(" ", "-"))
+                    const classList = document.getElementsByClassName(ourSet[i].cardName.replaceAll(" ", "-"))
+                    for (const element of classList) {
+                        element.textContent = `💡 Add to Tabber 💡`;
+                    };
+                };
+
+            }
+
+            if (changes[deckList].oldValue.length < changes[deckList].newValue.length) {
+                //assume change here
+                
+                let key_check = []
+                for (let i = 0; i<changes[deckList].oldValue.length;i++){
+                    key_check.push(changes[deckList].oldValue[i].cardName)
+                }
+                console.log(`${key_check}`)
+                let ourSet = changes[deckList].newValue.filter((crd) => !key_check.includes(crd.cardName))
+                console.log(`ourset: ${ourSet}`)
+                
+                for (let i = 0; i<ourSet.length;i++){
+                    const classList = document.getElementsByClassName(ourSet[i].cardName.replaceAll(" ", "-"))
+                    for (const element of classList){
+                        element.textContent = `➕ Add one more ➕`;
+                    };
+                };
+
+            }
+
+
+
+
+
+            
+        }
+    }
+}
+
+chrome.storage.onChanged.addListener(storageChangeEvent);
 // inject buttons to all cards in grid
 
 // find out what view we are in
@@ -52,25 +112,42 @@ async function checkList(cardName) {
 //get current url
 url = window.location.href;
 
-if (url.includes("as=grid")) {
+if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as="))) {
     // get all card divs
     const cardDivs = document.querySelectorAll(".card-grid-item");
     console.log(cardDivs);
+
+    //TODO: Empty card divs shouldn't get a button 
     cardDivs.forEach(cardDiv => {
-        const button = document.createElement("button");
-        button.classList.add("button-n");
-        button.textContent = `💡 Add to Tabber 💡`;
-        button.style.alignSelf = "center";
-        button.style.margin = "auto";
-        button.style.display = "block";
-        button.addEventListener("click", () => {
+        if (!cardDiv.classList.contains("flexbox-spacer")) {
+            const button = document.createElement("button");
             const cardName = cardDiv.querySelector(".card-grid-item-invisible-label").textContent;
-            addToDeckList(cardName);
-        });
-        cardDiv.appendChild(button);
+            button.classList.add("button-n");
+        
+            //Adding cardName to the id list
+            button.classList.add(`${cardName.replaceAll(" ","-")}`);
+
+            // Check here to see if it's already in the list
+            checkList(cardName).then(inList => {
+                if (!inList){
+                    button.textContent = `💡 Add to Tabber 💡`
+                } else {
+                    button.textContent = `➕ Add one more ➕`
+                }
+            });
+            
+            button.style.alignSelf = "center";
+            button.style.margin = "auto";
+            button.style.display = "block";
+            button.addEventListener("click", () => {
+                addToDeckList(cardName);
+            });
+            cardDiv.appendChild(button);
+        }
+        
     });
 } else if (url.includes("as=checklist")) {
-    console.log("got here");
+
     const checklist = document.getElementById("js-checklist");
     const tableHead = checklist.getElementsByTagName("thead")[0].querySelector("tr");
     
@@ -82,13 +159,23 @@ if (url.includes("as=grid")) {
     tableHead.appendChild(newRow);
 
     document.querySelector("tbody").querySelectorAll("tr").forEach(tr => {
-        console.log(tr);
+
         const newButtonWrapper = document.createElement("td");
         const newButton = document.createElement("button");
         newButtonWrapper.appendChild(newButton);
         newButton.classList.add("button-n");
-        newButton.textContent = "+ Tabber";
+
         const cardName = tr.querySelectorAll("td")[2].textContent;
+        newButton.classList.add(`${cardName.replaceAll(" ","-")}`);
+        checkList(cardName).then(inList => {
+            if (!inList){
+                newButton.textContent = `💡 Add to Tabber 💡`
+            } else {
+                newButton.textContent = `➕ Add one more ➕`
+            }
+        });
+
+        
         newButton.addEventListener("click", () => {
             addToDeckList(cardName);
         });
@@ -135,8 +222,15 @@ if (url.includes("as=grid")) {
         
         
         const button = document.createElement("button");
+        button.classList.add(`${cardName.replaceAll(" ","-")}`);
         button.classList.add("button-n");
-        button.textContent = `💡 Add to Tabber 💡`;
+        checkList(cardName).then(inList => {
+            if (!inList){
+                button.textContent = `💡 Add to Tabber 💡`
+            } else {
+                button.textContent = `➕ Add one more ➕`
+            }
+        });
         button.style.alignSelf = "center";
         button.style.margin = "auto";
         button.addEventListener("click", () => {
