@@ -112,7 +112,7 @@ chrome.storage.onChanged.addListener(storageChangeEvent);
 //get current url
 url = window.location.href;
 
-if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as="))) {
+if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) || (url.includes("search") && !url.includes("as="))) {
     // get all card divs
     const cardDivs = document.querySelectorAll(".card-grid-item");
     console.log(cardDivs);
