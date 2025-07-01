@@ -50,6 +50,33 @@ function get_card_tag(cardName,set,setNo) {
     return document.querySelectorAll(`.${make_card_tag(cardName,set,setNo)}`);
 }
 
+//Button helper function
+function createAddTabberButton(cardName,set,setNo)
+{
+    const button = document.createElement("button");
+    button.classList.add("button-n");
+
+    //Adding cardName to the id list
+    button.classList.add(make_card_tag(cardName,set,setNo));
+
+    // Check here to see if it's already in the list
+    checkList(cardName,set,setNo).then(inList => {
+        if (!inList){
+            button.textContent = `💡 Add to Tabber 💡`
+        } else {
+            button.textContent = `➕ Add one more ➕`
+        }
+    });
+
+    button.addEventListener("click", () => {
+        addToDeckList(cardName, set, setNo);
+        button.style.background = "#000000";
+        setTimeout(function(){button.style.background = "#fff"}, 20)
+    });
+
+    return button
+}
+
 function storageChangeEvent(changes, area) {
     //console.log(`Change event fired in ${area} storage`);
 
@@ -124,31 +151,18 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
     //TODO: Empty card divs shouldn't get a button 
     cardDivs.forEach(cardDiv => {
         if (!cardDiv.classList.contains("flexbox-spacer")) {
-            const button = document.createElement("button");
             const cardName = cardDiv.querySelector(".card-grid-item-invisible-label").textContent;
             const cardUrlSplit = cardDiv.getElementsByTagName('a')[0].href.split("https://scryfall.com/card/")[1].split("/");
             const set = cardUrlSplit[0];
             const setNo = cardUrlSplit[1];
-            button.classList.add("button-n");
-        
-            //Adding cardName to the id list
-            button.classList.add(make_card_tag(cardName,set,setNo));
 
-            // Check here to see if it's already in the list
-            checkList(cardName,set,setNo).then(inList => {
-                if (!inList){
-                    button.textContent = `💡 Add to Tabber 💡`
-                } else {
-                    button.textContent = `➕ Add one more ➕`
-                }
-            });
+            button = createAddTabberButton(cardName,set,setNo);
             
+            //Unique button init for this specific layout
             button.style.alignSelf = "center";
             button.style.margin = "auto";
             button.style.display = "block";
-            button.addEventListener("click", () => {
-                addToDeckList(cardName,set,setNo);
-            });
+
             cardDiv.appendChild(button);
         }
         
@@ -168,27 +182,15 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
     document.querySelector("tbody").querySelectorAll("tr").forEach(tr => {
 
         const newButtonWrapper = document.createElement("td");
-        const newButton = document.createElement("button");
-        newButtonWrapper.appendChild(newButton);
-        newButton.classList.add("button-n");
-
+        
         const cardName = tr.querySelectorAll("td")[2].textContent;
         const cardUrlSplit = tr.querySelectorAll("td")[0].querySelectorAll("a")[0].href.split("https://scryfall.com/card/")[1].split("/");
         const set = cardUrlSplit[0];
         const setNo = cardUrlSplit[1];
-        newButton.classList.add(make_card_tag(cardName, set, setNo));
-        checkList(cardName, set, setNo).then(inList => {
-            if (!inList){
-                newButton.textContent = `💡 Add to Tabber 💡`
-            } else {
-                newButton.textContent = `➕ Add one more ➕`
-            }
-        });
-
         
-        newButton.addEventListener("click", () => {
-            addToDeckList(cardName, set, setNo);
-        });
+        const button = createAddTabberButton(cardName,set,setNo);
+        newButtonWrapper.appendChild(button);
+
         tr.appendChild(newButtonWrapper);
     });
 
@@ -197,30 +199,20 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
     const cardDivs = document.querySelectorAll(".card-text.text-grid-item");
 
     cardDivs.forEach(cardDiv => {
-        const button = document.createElement("button");
+        
         const cardName = cardDiv.querySelector("h6").textContent.split("{")[0].trim();
         const cardUrlSplit = cardDiv.href.split("https://scryfall.com/card/")[1].split("/");
-        
-
         const set = cardUrlSplit[0];
         const setNo = cardUrlSplit[1];
-        button.classList.add("button-n");
-        button.classList.add(make_card_tag(cardName, set, setNo));
-        checkList(cardName, set, setNo).then(inList => {
-            if (!inList){
-                button.textContent = `💡 Add to Tabber 💡`
-            } else {
-                button.textContent = `➕ Add one more ➕`
-            }
-        });
+
+        const button = createAddTabberButton(cardName,set,setNo);
+       
+        //Unique styles
         button.style.alignSelf = "center";
         button.style.margin = "auto";
         button.style.display = "block";
         button.style.float = "bottom";
         button.style.position = "relative";
-        button.addEventListener("click", () => {
-            addToDeckList(cardName, set, setNo); // Edited
-        });
 
         cardDiv.appendChild(button);
     });
@@ -236,30 +228,16 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
         name_section.forEach(nameWrapper => {
         nameArr.push(nameWrapper.textContent.trim())
         });
-
-        console.log(nameArr)
         let cardName = nameArr.join(" // ")
-
-        console.log(cardName)
 
         
         const set = cardDiv.querySelector(".prints-current-set").href.split("https://scryfall.com/sets/")[1]
         const setNo = cardDiv.querySelector(".prints-current-set-details").textContent.split("·")[0].trim().replace("#","");
-        const button = document.createElement("button");
-        button.classList.add(make_card_tag(cardName, set, setNo));
-        button.classList.add("button-n");
-        checkList(cardName, set, setNo).then(inList => {
-            if (!inList){
-                button.textContent = `💡 Add to Tabber 💡`
-            } else {
-                button.textContent = `➕ Add one more ➕`
-            }
-        });
+        
+        const button = createAddTabberButton(cardName,set,setNo);
+        
         button.style.alignSelf = "center";
         button.style.margin = "auto";
-        button.addEventListener("click", () => {
-            addToDeckList(cardName, set, setNo);
-        });
 
         actions_section.appendChild(button);
     });

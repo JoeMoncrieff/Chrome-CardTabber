@@ -17,21 +17,25 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 
 * Button animations
     * ~~Buttons indicate cards that have already been added~~
-* potential style swap between 
-    * "1x cardName"
-    * "1 cardName"
-    * "cardName"
+    * ~~"onClick" resonsiveness~~
+        * Initial onclick Logic implented. See if it can be prettied
+    * ~~consolidate button animation code~~
 * Implementation of MTGgoldfish
     * add from event decklists as well?
-* Adding card set information (printing)
-* Removing the Arena tag from cards or look into whether it's a supported format or not.
+    * would have to add a default printing if that was the case maybe.
+* ~~Adding card set information (printing)~~
+* ~~Removing the Arena tag from cards or look into whether it's a supported format or not.~~
 
 ### Known issues
 
 1. **Scryfall**
     * Arena cards add weird in the search page - Seems to align with functionality
     *  ~~"Add to Tabber" buttons populate empty grids in grid view~~ Fixed
-    * "Add to Tabber" buttons aren't aligned in the text only mode
+    
+    * **Text Only mode**
+        * "Add to Tabber" buttons aren't aligned in the text only mode
+        * The whole box is an `<a>` element meaning clicking the button also takes you to the page with the card on it.
+    
 2. General
     * Content scripts can't utilise modules as they're supposed to be standalone annoying since they share functionality.
 
