@@ -18,7 +18,7 @@ chrome.storage.local.get("deckList").then(data => {
             paragraph.style.color = colours.text;
             paragraph.classList.add("card-name");
             console.log(card);
-            paragraph.textContent = card.quantity + "x " + card.cardName +" "+  card.set +" "+ card.setNo;
+            paragraph.textContent = card.quantity + "x " + card.cardName +" "+  card.set.toUpperCase() +" "+ card.setNo;
             // align remove button to stick onto the right wall of the cardDiv      
             const removeButton = document.createElement("button");
             removeButton.classList.add("card-remove-button");
@@ -69,7 +69,7 @@ copyButton.addEventListener("click", () => {
     let toCopy = "";
     chrome.storage.local.get("deckList").then(data => {
         data.deckList.forEach(card => {
-            toCopy += card.quantity + "x " + card.cardName + " (" + card.set + ") (" + card.setNo + ")" + "\n"
+            toCopy += card.quantity + "x " + card.cardName + " (" + card.set.toUpperCase() + ") " + card.setNo  + "\n"
         });
         navigator.clipboard.writeText(toCopy);
     });
@@ -93,7 +93,7 @@ downloadButton.addEventListener("click", () => {
     let toDownload = "";
     chrome.storage.local.get("deckList").then(data => {
         data.deckList.forEach(card => {
-            toDownload += card.quantity + "x " + card.cardName + " (" + card.set + ") (" + card.setNo + ")" + "\n";
+            toDownload += card.quantity + "x " + card.cardName + " (" + card.set.toUpperCase() + ") " + card.setNo + "" + "\n";
         });
         const blob = new Blob([toDownload], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
