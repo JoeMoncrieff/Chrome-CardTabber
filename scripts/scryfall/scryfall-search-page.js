@@ -196,29 +196,6 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
 
         tr.appendChild(newButtonWrapper);
     });
-
-    
-} else if (url.includes("as=text")) {
-    const cardDivs = document.querySelectorAll(".card-text.text-grid-item");
-
-    cardDivs.forEach(cardDiv => {
-        
-        const cardName = cardDiv.querySelector("h6").textContent.split("{")[0].trim();
-        const cardUrlSplit = cardDiv.href.split("https://scryfall.com/card/")[1].split("/");
-        const set = cardUrlSplit[0];
-        const setNo = cardUrlSplit[1];
-
-        const button = createAddTabberButton(cardName,set,setNo);
-       
-        //Unique styles
-        button.style.alignSelf = "center";
-        button.style.margin = "auto";
-        button.style.display = "block";
-        button.style.float = "bottom";
-        button.style.position = "relative";
-
-        cardDiv.appendChild(button);
-    });
     
 } else if (url.includes("as=full") || url.includes("/card/")) {
     const cardDivs = document.querySelectorAll(".card-profile");
@@ -244,4 +221,33 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
 
         actions_section.appendChild(button);
     });
+} 
+
+/*
+//====Code Remains in case i return to this but dropped support due to lack of image functionality.====
+else if (url.includes("as=text")) {
+
+    
+    const cardDivs = document.querySelectorAll(".card-text.text-grid-item");
+
+    cardDivs.forEach(cardDiv => {
+        
+        const cardName = cardDiv.querySelector("h6").textContent.split("{")[0].trim();
+        const cardUrlSplit = cardDiv.href.split("https://scryfall.com/card/")[1].split("/");
+        const set = cardUrlSplit[0];
+        const setNo = cardUrlSplit[1];
+
+        const button = createAddTabberButton(cardName,set,setNo);
+       
+        //Unique styles
+        button.style.alignSelf = "center";
+        button.style.margin = "auto";
+        button.style.display = "block";
+        button.style.float = "bottom";
+        button.style.position = "relative";
+
+        cardDiv.appendChild(button);
+    
+    });
 }
+*/

@@ -31,7 +31,7 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 1. **Scryfall**
     * ~~Arena cards add weird in the search page - Seems to align with functionality~~
     * ~~"Add to Tabber" buttons populate empty grids in grid view~~ Fixed
-    * **Text Only mode**
+    * ~~**Text Only mode**~~ **_===Dropped===_**
         * "Add to Tabber" buttons aren't aligned in the text only mode
         * The whole box is an `<a>` element meaning clicking the button also takes you to the page with the card on it.
         * Polling user groups and was 11-0 with 11 saying they don't use text only. Since I'm making this for my friends might as well pull the plug on text only.
@@ -40,12 +40,18 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
     * Content scripts can't utilise modules as they're supposed to be standalone annoying since they share functionality.
 
 
-### User testing first round
+### User feedback first round
 
 * ~~Hard to tell if card is added w/o opening pop-up (maybe alter buttons to show)~~
     * changed button but mb could change background around card in some views.
-* Wished that card would have an image pop up in the list view window - Potential DB integration for this one?.
+* ~~Wished that card would have an image pop up in the list view window - Potential DB integration for this one?.~~
     * See if img link in all modes. Issues with text only mode... just drop support?
 * ~~Confirmation prompt for clearing list - easy to click on accident~~
     * provisional fix for now.
 * ~~When page isn't fully populated "Phantom buttons" appear that do nothing~~ Fixed
+
+### User feedback second round
+
+* Visual indication of card in list --> Soft glow
+* A way to keep track of what Moxfield deck you're working on so you don't accidentally add ~~more ~~ the same cards.
+* _Shudders_ additional **tabs** wanted.
