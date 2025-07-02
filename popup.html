@@ -4,21 +4,27 @@
         <link rel="stylesheet" href="styles/popup.css">
     </head>
     <body>
+        <div id="card-viewer">
+            <img id=card-viewer-img src="res/notfound.png"/>
+        </div>
         <div class="header-wrapper">
             <div class="header">
                 <img src="res/icons/icon-48.png" alt="Card Tabber Logo" class="logo">
                 <h1>Current List</h1>
             </div> 
+            
             <div id="deck-list-footer">
                 <button class="deck-list-button" id="copy-deck-list">Copy Deck List</button>
                 <button class="deck-list-button" id="download-deck-list">Download TXT</button>
                 <button class="deck-list-button" id="clear-deck-list"> Clear All </button>
-                
             </div>
         </div>
         
         <div id="deck-list"></div>
         
+        
         <script type="module" src="scripts/popup.js"></script>
+        
     </body>
+    
 </html>

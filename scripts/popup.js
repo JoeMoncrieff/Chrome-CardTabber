@@ -3,13 +3,24 @@
 
 import colours from "./colours.js";
 import { addToDeckList, removeOneFromDeckList } from "./general/cardActions.js";
+
+//Card viewer logic.
+const cardViewer = document.getElementById("card-viewer")
+
+document.addEventListener("mousemove",(event) => {
+    cardViewer.style.left = event.pageX - 185; 
+    cardViewer.style.top = event.pageY - 40;
+     
+});
+const cardViewerImg = document.getElementById("card-viewer-img");
+
+
 chrome.storage.local.get("deckList").then(data => {
     const deckList = document.getElementById("deck-list");
     
     // each element in a div that has the card name and also a button to remove the card from the deckList 
     // and also remove it from the popup display
-    console.log(data);
-    if (data.deckList != null){
+    if (data.deckList != null) {
         data.deckList.forEach(card => {
             const cardDiv = document.createElement("div");
             cardDiv.classList.add("card-div");
@@ -17,7 +28,7 @@ chrome.storage.local.get("deckList").then(data => {
             const paragraph = document.createElement("p");
             paragraph.style.color = colours.text;
             paragraph.classList.add("card-name");
-            console.log(card);
+            
             paragraph.textContent = card.quantity + "x " + card.cardName +" "+  card.set.toUpperCase() +" "+ card.setNo;
             // align remove button to stick onto the right wall of the cardDiv      
             const removeButton = document.createElement("button");
@@ -55,6 +66,24 @@ chrome.storage.local.get("deckList").then(data => {
             cardDiv.appendChild(removeButton);
             cardDiv.appendChild(addOneButton);
             cardDiv.appendChild(removeOneButton);
+
+            //Image logic
+            cardDiv.addEventListener("mouseenter",() => {
+                cardViewer.style.opacity = 1;
+                let cardArt = card.artUrl;
+                if (cardArt == null) {
+                    cardViewerImg.src = "res/notfound.png"
+                } else {
+                    cardViewerImg.src = cardArt.split(".jpg")[0] + ".jpg";
+                }
+                
+                //Set image logic here
+            });
+            cardDiv.addEventListener("mouseleave",() => {
+                cardViewer.style.opacity = 0;
+            });
+            //Image logic
+
             deckList.appendChild(cardDiv);
             //add dotted line to the bottom of the cardDiv
             //cardDiv.style.borderBottom = "3px dotted " + colours.background;
@@ -103,3 +132,5 @@ downloadButton.addEventListener("click", () => {
         a.click();
     });
 });
+
+

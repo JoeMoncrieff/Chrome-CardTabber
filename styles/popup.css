@@ -10,6 +10,22 @@
     --card-bg-experimental: #f9fafb;
 }
 
+#card-viewer-img{
+    width: 175px;
+    height: 245px;
+    object-fit: fill;
+    
+}
+
+#card-viewer {
+    position: absolute;
+    width: 175px;
+    height: 245px;
+    background-color: #102542;
+    z-index: 10000;
+    opacity: 0;
+}
+
 .header-wrapper {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     z-index: 1000;
@@ -40,8 +56,6 @@
     background-color: var(--listbg2);
     opacity: 1;
 }
-
-
 
 .header {
     background-color: var(--bgpale);
@@ -79,7 +93,7 @@ body {
     height: auto;
     overflow-y: auto;
     background-color: var(--list-bg-experimental);
-    padding-bottom: 10px;
+    padding-bottom: 160px;
 }
 
 .card-div {

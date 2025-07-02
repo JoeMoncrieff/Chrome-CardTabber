@@ -11,13 +11,14 @@ async function removeOneFromDeckList(cardName, set, setNo) {
 }
 
   
-async function addToDeckList(cardName, set, setNo) {
+async function addToDeckList(cardName, set, setNo, artUrl=null) {
     const data = await chrome.storage.local.get("deckList");
     const deckList = data.deckList || [];
     let isInList = await checkList(cardName,set,setNo);
     if (!isInList) {
       //add the card to the decklist
-      deckList.push({cardName: cardName, quantity: 1, set: set, setNo: setNo});
+      deckList.push({cardName: cardName, quantity: 1, set: set, setNo: setNo,artUrl:artUrl});
+      
       await chrome.storage.local.set({deckList: deckList});
     } else {
       //update the quantity
@@ -30,14 +31,14 @@ async function checkList(cardName, set, setNo) {
     const data = await chrome.storage.local.get("deckList");
     // Check if deckList is undefined or empty
     if (!data.deckList) {
-    console.log("no decklist");
+    
     await chrome.storage.local.set({"deckList": []});
-    console.log("init decklist... done");
+    
     return false;
     }
     // Check if cardName exists in the deckList
     const found = data.deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo) !== undefined;
-    console.log("Checking if card in list:", found);
+    
     return found;
 }
 
@@ -51,7 +52,7 @@ function get_card_tag(cardName,set,setNo) {
 }
 
 //Button helper function
-function createAddTabberButton(cardName,set,setNo)
+function createAddTabberButton(cardName,set,setNo,artUrl=null)
 {
     const button = document.createElement("button");
     button.classList.add("button-n");
@@ -69,7 +70,7 @@ function createAddTabberButton(cardName,set,setNo)
     });
 
     button.addEventListener("click", () => {
-        addToDeckList(cardName, set, setNo);
+        addToDeckList(cardName, set, setNo, artUrl);
         button.style.background = "#000000";
         setTimeout(function(){button.style.background = "#fff"}, 20)
     });
@@ -78,7 +79,7 @@ function createAddTabberButton(cardName,set,setNo)
 }
 
 function storageChangeEvent(changes, area) {
-    //console.log(`Change event fired in ${area} storage`);
+    
 
     const storageChanges = Object.keys(changes);
 
@@ -93,13 +94,13 @@ function storageChangeEvent(changes, area) {
                 for (let i = 0; i<changes[deckList].newValue.length;i++){
                     key_check.push(`${changes[deckList].newValue[i].cardName}${changes[deckList].newValue[i].set}${changes[deckList].newValue[i].setNo}`) //Edited
                 }
-                console.log(`${key_check}`)
+                
                 let ourSet = changes[deckList].oldValue.filter((crd) => !key_check.includes(`${crd.cardName}${crd.set}${crd.setNo}`)) //Edited
                 
 
                 // for (let i = 0; i<changes[deckList].newValue.length;i++){
                 for (let i = 0; i<ourSet.length;i++){
-                    console.log(make_card_tag(ourSet[i].cardName,ourSet[i].set,ourSet[i].setNo))
+                    
                     const classList = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo);
                     for (const element of classList) {
                         element.textContent = `💡 Add to Tabber 💡`;
@@ -115,12 +116,12 @@ function storageChangeEvent(changes, area) {
                 for (let i = 0; i<changes[deckList].oldValue.length;i++){
                     key_check.push(`${changes[deckList].oldValue[i].cardName}${changes[deckList].oldValue[i].set}${changes[deckList].oldValue[i].setNo}`)
                 }
-                console.log(`${key_check}`)
+                
                 let ourSet = changes[deckList].newValue.filter((crd) => !key_check.includes(`${crd.cardName}${crd.set}${crd.setNo}`))
-                console.log(`ourset: ${ourSet[0]}`)
+                
                 
                 for (let i = 0; i<ourSet.length;i++){
-                    console.log(make_card_tag(ourSet[i].cardName,ourSet[i].set,ourSet[i].setNo))
+                    
                     const classList = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo);
                     for (const element of classList){
                         element.textContent = `➕ Add one more ➕`;
@@ -146,7 +147,7 @@ url = window.location.href;
 if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) || (url.includes("search") && !url.includes("as="))) {
     // get all card divs
     const cardDivs = document.querySelectorAll(".card-grid-item");
-    console.log(cardDivs);
+    
 
     //TODO: Empty card divs shouldn't get a button 
     cardDivs.forEach(cardDiv => {
@@ -155,8 +156,9 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
             const cardUrlSplit = cardDiv.getElementsByTagName('a')[0].href.split("https://scryfall.com/card/")[1].split("/");
             const set = cardUrlSplit[0];
             const setNo = cardUrlSplit[1];
+            const artUrl = cardDiv.querySelector("img").src
 
-            button = createAddTabberButton(cardName,set,setNo);
+            button = createAddTabberButton(cardName,set,setNo,artUrl);
             
             //Unique button init for this specific layout
             button.style.alignSelf = "center";
@@ -187,8 +189,9 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
         const cardUrlSplit = tr.querySelectorAll("td")[0].querySelectorAll("a")[0].href.split("https://scryfall.com/card/")[1].split("/");
         const set = cardUrlSplit[0];
         const setNo = cardUrlSplit[1];
+        const artUrl = tr.getAttribute("data-card-image-front")
         
-        const button = createAddTabberButton(cardName,set,setNo);
+        const button = createAddTabberButton(cardName,set,setNo,artUrl);
         newButtonWrapper.appendChild(button);
 
         tr.appendChild(newButtonWrapper);
@@ -233,9 +236,9 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
         
         const set = cardDiv.querySelector(".prints-current-set").href.split("https://scryfall.com/sets/")[1]
         const setNo = cardDiv.querySelector(".prints-current-set-details").textContent.split("·")[0].trim().replace("#","");
-        
-        const button = createAddTabberButton(cardName,set,setNo);
-        
+        const artUrl = cardDiv.querySelector("img").src;
+
+        const button = createAddTabberButton(cardName,set,setNo,artUrl);
         button.style.alignSelf = "center";
         button.style.margin = "auto";
 

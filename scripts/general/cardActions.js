@@ -40,14 +40,14 @@ async function checkList(cardName, set, setNo) {
   const data = await chrome.storage.local.get("deckList");
   // Check if deckList is undefined or empty
   if (!data.deckList) {
-  console.log("no decklist");
+  
   await chrome.storage.local.set({"deckList": []});
-  console.log("init decklist... done");
+  
   return false;
   }
 
   // Check if cardName exists in the deckList
   const found = data.deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo) !== undefined; // Edited
-  console.log("Checking if card in list:", found);
+  
   return found;
   }
