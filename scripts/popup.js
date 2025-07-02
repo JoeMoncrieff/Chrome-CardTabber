@@ -8,7 +8,12 @@ import { addToDeckList, removeOneFromDeckList } from "./general/cardActions.js";
 const cardViewer = document.getElementById("card-viewer")
 
 document.addEventListener("mousemove",(event) => {
-    cardViewer.style.left = event.pageX - 185; 
+    if (event.pageX > 125) {
+        cardViewer.style.left = event.pageX - 185; 
+    } else {
+        cardViewer.style.left = event.pageX + 10; 
+    }   
+    
     cardViewer.style.top = event.pageY - 40;
      
 });
@@ -41,7 +46,8 @@ chrome.storage.local.get("deckList").then(data => {
                 chrome.storage.local.get("deckList").then(data => {
                     data.deckList = data.deckList.filter(c => !(c.cardName === card.cardName && c.set === card.set && c.setNo === card.setNo)); // Edited
                     chrome.storage.local.set({"deckList": data.deckList});
-                    location.reload();
+                    cardDiv.remove();
+                    cardViewer.style.opacity = 0;
                 });
                 
             });
@@ -51,14 +57,31 @@ chrome.storage.local.get("deckList").then(data => {
             addOneButton.textContent = "\u{2795}";
             addOneButton.addEventListener("click", () => {
                 addToDeckList(card.cardName, card.set, card.setNo);
-                location.reload();
+                chrome.storage.local.get("deckList").then(data => {
+                    card = data.deckList.find(c => card.cardName === c.cardName && card.set === c.set && card.setNo === c.setNo)
+                    
+                    paragraph.textContent = card.quantity + "x " + card.cardName +" "+  card.set.toUpperCase() +" "+ card.setNo;
+                });
+                
             });
             const removeOneButton = document.createElement("button");
             removeOneButton.classList.add("card-remove-button");
             removeOneButton.textContent = "\u{2796}";
             removeOneButton.addEventListener("click", () => {
-                removeOneFromDeckList(card.cardName, card.set, card.setNo);
-                location.reload();
+                removeOneFromDeckList(card.cardName, card.set, card.setNo).then(deletedAll => {
+                    if (deletedAll) {
+                        
+                        cardDiv.remove();
+                        cardViewer.style.opacity = 0;
+
+                    } else {
+                        chrome.storage.local.get("deckList").then(data => {
+                            card = data.deckList.find(c => card.cardName === c.cardName && card.set === c.set && card.setNo === c.setNo)
+                            
+                            paragraph.textContent = card.quantity + "x " + card.cardName +" "+  card.set.toUpperCase() +" "+ card.setNo;
+                        });
+                    }
+                });
             });
 
             
@@ -133,4 +156,14 @@ downloadButton.addEventListener("click", () => {
     });
 });
 
+
+
+// Moxfield priming here.
+function getCardsFromMoxLink(link) {
+    //navigate to webpage.
+}
+
+function parseMoxCardsIntoLocalStorage() {
+
+}
 

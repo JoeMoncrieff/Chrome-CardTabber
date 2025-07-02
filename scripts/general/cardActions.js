@@ -11,13 +11,16 @@ Decklist
 export async function removeOneFromDeckList(cardName, set, setNo) {
   const data = await chrome.storage.local.get("deckList");
   const deckList = data.deckList || [];
+  var deletedAll = false;
   //Remove the card from the decklist if the quantity is 1
-  if (deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo).quantity === 1) { // Edited
-    deckList.splice(deckList.findIndex(card => card.cardName === cardName && card.set === set && card.setNo === setNo), 1); // Edited
+  if (deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo).quantity === 1) { 
+    deckList.splice(deckList.findIndex(card => card.cardName === cardName && card.set === set && card.setNo === setNo), 1);
+    deletedAll = true;
   } else {
-    deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo).quantity -= 1; // Edited
+    deckList.find(card => card.cardName === cardName && card.set === set && card.setNo === setNo).quantity -= 1;
   }
   await chrome.storage.local.set({deckList: deckList});
+  return deletedAll;
 }
 
 

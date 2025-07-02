@@ -41,7 +41,7 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
     * Content scripts can't utilise modules as they're supposed to be standalone annoying since they share functionality.
 
 3. Popup.js
-    * `location.reload()` resets where you were on the page annoying when you're at a scrollable amount of cards.
+    * ~~`location.reload()` resets where you were on the page annoying when you're at a scrollable amount of cards.~~
 
 ### User feedback first round
 
