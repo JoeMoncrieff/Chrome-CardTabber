@@ -31,6 +31,7 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 1. **Scryfall**
     * ~~Arena cards add weird in the search page - Seems to align with functionality~~
     * ~~"Add to Tabber" buttons populate empty grids in grid view~~ Fixed
+    * Images sometimes come in different languages than english? -- Look into How I url trim.
     * ~~**Text Only mode**~~ **_===Dropped===_**
         * "Add to Tabber" buttons aren't aligned in the text only mode
         * The whole box is an `<a>` element meaning clicking the button also takes you to the page with the card on it.
@@ -39,6 +40,8 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 2. General
     * Content scripts can't utilise modules as they're supposed to be standalone annoying since they share functionality.
 
+3. Popup.js
+    * `location.reload()` resets where you were on the page annoying when you're at a scrollable amount of cards.
 
 ### User feedback first round
 
@@ -52,6 +55,10 @@ The aim of Card Tabber is to take cards from scryfall websites and add them to a
 
 ### User feedback second round
 
-* Visual indication of card in list --> Soft glow
+* ~~Visual indication of card in list --> Soft glow~~
 * A way to keep track of what Moxfield deck you're working on so you don't accidentally add ~~more ~~ the same cards.
+    * How to access list, not a separate rawtext url. only get list in readable form when you go `more` --> `export` and then you can see decklist in download options on form 
+        * you can get list from navigating to {decklistURL}/edit but a little nervous this is going to get permissions patched at some point...
+    * Extra: Version and exact card match?
+    * Look into private/unlisted decks.
 * _Shudders_ additional **tabs** wanted.

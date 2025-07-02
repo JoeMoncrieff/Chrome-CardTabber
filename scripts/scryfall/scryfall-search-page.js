@@ -43,13 +43,18 @@ async function checkList(cardName, set, setNo) {
 }
 
 //Helper function
-function make_card_tag(cardName,set,setNo) {
-    return `${cardName} ${set} ${setNo}`.replaceAll(/[^a-zA-Z0-9]/g,"-").replaceAll(" ","-");
+function make_card_tag(cardName,set,setNo,isDiv = false) {
+    let returnString = `${cardName} ${set} ${setNo}`.replaceAll(/[^a-zA-Z0-9]/g,"-").replaceAll(" ","-");
+    if (isDiv) {
+        returnString += "-div";
+    }
+    return returnString;
 
 }
-function get_card_tag(cardName,set,setNo) {
-    return document.querySelectorAll(`.${make_card_tag(cardName,set,setNo)}`);
+function get_card_tag(cardName,set,setNo,isDiv = false) {
+    return document.querySelectorAll(`.${make_card_tag(cardName,set,setNo,isDiv)}`);
 }
+
 
 //Button helper function
 function createAddTabberButton(cardName,set,setNo,artUrl=null)
@@ -88,7 +93,7 @@ function storageChangeEvent(changes, area) {
             
             //If an item is removed
             if (changes[deckList].oldValue.length > changes[deckList].newValue.length) {
-                //assume change here
+                
                 
                 let key_check = []
                 for (let i = 0; i<changes[deckList].newValue.length;i++){
@@ -98,19 +103,33 @@ function storageChangeEvent(changes, area) {
                 let ourSet = changes[deckList].oldValue.filter((crd) => !key_check.includes(`${crd.cardName}${crd.set}${crd.setNo}`)) //Edited
                 
 
-                // for (let i = 0; i<changes[deckList].newValue.length;i++){
                 for (let i = 0; i<ourSet.length;i++){
                     
                     const classList = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo);
                     for (const element of classList) {
                         element.textContent = `💡 Add to Tabber 💡`;
                     };
-                };
 
+                    const cardDiv = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo,true);
+                    let url = window.location.href;
+                    for (const divider of cardDiv){
+                        if (url.includes("as=grid") 
+                            || (url.includes("sets") && !url.includes("as=")) 
+                            || (url.includes("search") && !url.includes("as="))) {
+                                
+                            divider.querySelector("img").style.boxShadow = "0px 0px black"
+                        } else if (url.includes("as=checklist")) {
+                            divider.style.background = "";
+                        } else if (url.includes("as=full") || url.includes("/card/")) {
+                            divider.querySelector("img").style.boxShadow = "0px 0px black"
+                        }
+                        
+                    };
+                };
             }
 
             if (changes[deckList].oldValue.length < changes[deckList].newValue.length) {
-                //assume change here
+                
                 
                 let key_check = []
                 for (let i = 0; i<changes[deckList].oldValue.length;i++){
@@ -121,13 +140,29 @@ function storageChangeEvent(changes, area) {
                 
                 
                 for (let i = 0; i<ourSet.length;i++){
-                    
+                
                     const classList = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo);
                     for (const element of classList){
                         element.textContent = `➕ Add one more ➕`;
                     };
-                };
 
+                    const cardDiv = get_card_tag(ourSet[i].cardName, ourSet[i].set, ourSet[i].setNo,true);
+                    let url = window.location.href;
+                    for (const divider of cardDiv){
+                        if (url.includes("as=grid") 
+                            || (url.includes("sets") && !url.includes("as=")) 
+                            || (url.includes("search") && !url.includes("as="))) {
+    
+                            divider.querySelector("img").style.boxShadow = "0px 10px 2px rgba(0, 180, 0, 0.6)"
+
+                        } else if (url.includes("as=checklist")) {
+                            divider.style.background = "rgba(0, 180, 0, 0.3)"
+                        } else if (url.includes("as=full") || url.includes("/card/")) {
+                            divider.querySelector("img").style.boxShadow = "0px 20px 2px rgba(0, 180, 0, 0.6)"
+                        }
+                    };
+
+                };
             } 
         }
     }
@@ -157,9 +192,18 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
             const set = cardUrlSplit[0];
             const setNo = cardUrlSplit[1];
             const artUrl = cardDiv.querySelector("img").src
+            
+            //Card highlighting logic
+            cardDiv.classList.add(make_card_tag(cardName,set,setNo,true));
 
             button = createAddTabberButton(cardName,set,setNo,artUrl);
-            
+
+            //Check if card is in list and if so then add a little shadow.
+            checkList(cardName,set,setNo).then(inList => {
+                if (inList) {cardDiv.querySelector("img").style.boxShadow = "0px 10px 2px rgba(0, 180, 0, 0.6)";}
+            });
+
+
             //Unique button init for this specific layout
             button.style.alignSelf = "center";
             button.style.margin = "auto";
@@ -190,7 +234,12 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
         const set = cardUrlSplit[0];
         const setNo = cardUrlSplit[1];
         const artUrl = tr.getAttribute("data-card-image-front")
-        
+
+        tr.classList.add(make_card_tag(cardName,set,setNo,true));
+        checkList(cardName,set,setNo).then(inList => {
+            if (inList) {tr.style.background = "rgba(0, 180, 0, 0.3)";};
+        });
+
         const button = createAddTabberButton(cardName,set,setNo,artUrl);
         newButtonWrapper.appendChild(button);
 
@@ -214,6 +263,12 @@ if (url.includes("as=grid") || (url.includes("sets") && !url.includes("as=")) ||
         const set = cardDiv.querySelector(".prints-current-set").href.split("https://scryfall.com/sets/")[1]
         const setNo = cardDiv.querySelector(".prints-current-set-details").textContent.split("·")[0].trim().replace("#","");
         const artUrl = cardDiv.querySelector("img").src;
+        
+        cardDiv.classList.add(make_card_tag(cardName,set,setNo,true));
+
+        checkList(cardName,set,setNo).then(inList => {
+            if (inList) {cardDiv.querySelector("img").style.boxShadow = "0px 20px 2px rgba(0, 180, 0, 0.6)";};
+        });
 
         const button = createAddTabberButton(cardName,set,setNo,artUrl);
         button.style.alignSelf = "center";
